@@ -10,7 +10,7 @@ let options = {
   },
   loadingPage;
 
-const BASE_URL = "http://175.24.95.198:8099/";
+const BASE_URL = "http://127.0.0.1:8081/";
 let headers = {
   Accept: "application/json;charset=utf-8",
   "Content-Type": "application/json;charset=utf-8",
@@ -25,12 +25,9 @@ axios.interceptors.request.use(
   (config) => {
     config.withCredentials = true;
     let token = localStorage.getItem("token");
-    console.log("hello");
 
     if (token) {
-      config.headers.token = token;
-    } else {
-      router.push("/login");
+      config.headers.Authorization = token;
     }
     if (config.method === "get") {
       config.params = {
@@ -51,8 +48,15 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     loadingPage.close();
+    // 100006 用户未登录错误
     if (response.data.code === 200) {
       return response.data;
+    }
+    if (
+      response.data.data.code === 100006 ||
+      response.data.data.code === 100007
+    ) {
+      router.push("/login");
     }
     return response.data;
   },
