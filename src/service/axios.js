@@ -48,23 +48,29 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     loadingPage.close();
-    // 100006 用户未登录错误
     if (response.data.code === 200) {
       return response.data;
+    } else {
+      // 100006 用户未登录错误 100007 token过期
+      if (
+        response.data.data.code === 100006 ||
+        response.data.data.code === 100007
+      ) {
+        router.push("/login");
+      }
+      return response.data;
     }
-    if (
-      response.data.data.code === 100006 ||
-      response.data.data.code === 100007
-    ) {
-      router.push("/login");
-    }
-    return response.data;
   },
   (error) => {
     loadingPage.close();
-    if (error.response.data.code === 500) {
+    if (
+      error.response.status === 500 ||
+      error.response.data.code === 100006 ||
+      error.response.data.code === 100007
+    ) {
       router.push("/login");
     }
+    return error.response.data;
   }
 );
 

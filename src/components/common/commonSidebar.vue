@@ -25,20 +25,24 @@
                 :key="subItem.index"
                 class="title"
               >
-                <template slot="title" class="title">{{ subItem.title }}</template>
+                <template slot="title" class="title">{{
+                  subItem.title
+                }}</template>
                 <el-menu-item
-                  v-for="(threeItem,i) in subItem.subs"
+                  v-for="(threeItem, i) in subItem.subs"
                   :key="i"
                   :index="threeItem.index"
                   class="title"
-                >{{ threeItem.title }}</el-menu-item>
+                  >{{ threeItem.title }}</el-menu-item
+                >
               </el-submenu>
               <el-menu-item
                 v-else
                 :index="subItem.index"
                 :key="subItem.index"
                 class="title"
-              >{{ subItem.title }}</el-menu-item>
+                >{{ subItem.title }}</el-menu-item
+              >
             </template>
           </el-submenu>
         </template>
@@ -66,6 +70,11 @@ export default {
           icon: "el-icon-location-outline",
           index: "dashboard",
           title: "系统首页",
+        },
+        {
+          icon: "el-icon-location-outline",
+          index: "commodity",
+          title: "商品管理",
         },
         {
           icon: "el-icon-notebook-2",
